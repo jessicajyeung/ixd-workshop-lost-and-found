@@ -58,6 +58,18 @@ DesignAtLarge/ixd-workshop-lost-and-found
             
             function loadLost() {
                 // TODO: Load the lost panel
+                ajax({
+                    url: "/ajax/lost?action=get",
+                    type: "get",
+                    success: function (data) {
+                        data.forEach(function (lost) {
+                            var item = new google.maps.InfoWindow; // infowindow allow user to place somthing on the map
+                            item.setPosition({lat: lost.lat, lng: lost.lng});
+                            item.setContent(lost.name);
+                            item.open(map);
+                        });
+                    }
+                });
             }
             
             function postFound() {
@@ -70,6 +82,21 @@ DesignAtLarge/ixd-workshop-lost-and-found
                 }
                 randomClosePosition(function (pos) {
                     // TODO: Post the information
+                    ajax({
+                        url: "/ajax/found?action=post",
+                        type: "post",
+                        data: {
+                            name: $("#found-item").val(),
+                            description: $("#found-description").val(),
+                            lat: pos.lat,
+                            lng: pos.lng
+                }, 
+                success: function (data) {
+                    alert("Post Success!");
+                    window.location.reload();
+                }
+             });
+
                 });
             }
             
@@ -80,6 +107,12 @@ DesignAtLarge/ixd-workshop-lost-and-found
                 //      lat: <LATITUDE>,
                 //      lng: <LONGITUDE>
                 //  }
+                navigator.geolocation.getCurrentPosition(function (info) 
+                    {
+                        callback({lat: info.coords.latitude, 
+                                  lng: info.coords.longitude});
+                                 });
+                    }
             }
             
             function randomClosePosition(callback) {
@@ -91,6 +124,6 @@ DesignAtLarge/ixd-workshop-lost-and-found
             }
         </script>
         <script src="js/index.js"></script>
-        <script async defer src="https://maps.googleapis.com/maps/api/js?key=TODO_YOUR_API_KEY_HERE&callback=initMap"></script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsClP9eQSpTGBtKnM7Rwo4_zABzRpO02o&callback=initMap"></script>
     </body>
 </html>

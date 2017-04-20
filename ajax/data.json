@@ -2,6 +2,7 @@
     {
         "name": "Umbrella",
         "description": "None",
+        // The most important part lat & lng
         "lat": 32.8819696,
         "lng": -117.2398678
     }
